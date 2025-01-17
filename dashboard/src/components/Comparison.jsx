@@ -34,9 +34,19 @@ function Comparison() {
     setFile(file);
   };
 
+  // Define the color palette
+  const colorPalette = [
+    'rgba(255, 99, 71, 0.6)', // Orange
+    'rgba(255, 165, 0, 0.6)', // Yellow
+    'rgba(255, 255, 0, 0.6)', // Light Green
+    'rgba(0, 128, 0, 0.6)',   // Green
+    'rgba(0, 255, 255, 0.6)', // Cyan
+    'rgba(0, 0, 255, 0.6)'    // Blue
+  ];
+
   /**
    * Convert results object to chartjs data with percentage values.
-   * 
+   *
    * Expects a structure like:
    *  {
    *    "Logistic Regression": { "Accuracy": 0.92, "Precision": 0.90, ... },
@@ -60,8 +70,8 @@ function Comparison() {
         label: model,
         // Multiply by 100 for percentages
         data: metricNames.map((m) => (resultsObj[model][m] * 100).toFixed(2)),
-        backgroundColor: `rgba(${80 + idx * 40}, ${120 + idx * 30}, ${80 + idx * 20}, 0.6)`,
-        borderColor: `rgba(${80 + idx * 40}, ${120 + idx * 30}, ${80 + idx * 20}, 1)`,
+        backgroundColor: colorPalette[idx % colorPalette.length],
+        borderColor: colorPalette[idx % colorPalette.length].replace('0.6', '1'),
         borderWidth: 1,
       })),
     };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Card, FileInput, Button, TextInput, Alert, Title, Flex} from '@mantine/core';
+import { Card, FileInput, Button, TextInput, Alert, Title, Flex, Modal } from '@mantine/core';
 
 function Recommendation() {
   const [file, setFile] = useState(null);
@@ -16,6 +16,7 @@ function Recommendation() {
   const [recommendation, setRecommendation] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [opened, setOpened] = useState(false);
 
   const handleFileChange = (file) => {
     setFile(file);
@@ -48,6 +49,7 @@ function Recommendation() {
         },
       });
       setRecommendation(response.data["Recommended Crop"]);
+      setOpened(true); // Open the modal
     } catch (error) {
       console.error('Error uploading file:', error);
       setErrorMessage('Error uploading file. Please try again.');
@@ -147,16 +149,23 @@ function Recommendation() {
           </Button>
         </Flex>
       </form>
-      {recommendation && (
-        <Alert title="Recommendation" color="green" style={{ marginTop: '1rem' }}>
-          Recommended Crop: {recommendation}
-        </Alert>
-      )}
       {errorMessage && (
         <Alert title="Error" color="red" style={{ marginTop: '1rem' }}>
           {errorMessage}
         </Alert>
       )}
+
+      {/* Modal for Recommendation */}
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Recommendation"
+        centered // Center the modal
+      >
+        <Alert color="green">
+          Recommended Crop: {recommendation}
+        </Alert>
+      </Modal>
     </Card>
   );
 }
